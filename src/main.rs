@@ -1,7 +1,6 @@
 mod terminal;
-mod frame;
 use terminal::Terminal;
-use frame::Frame;
+use terminal::Frame;
 use terminal::Size;
 use crossterm::style::Color;
 

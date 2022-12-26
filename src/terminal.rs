@@ -1,5 +1,4 @@
 use std::io::stdout;
-use crate::Frame;
 use crossterm::terminal::enable_raw_mode;
 use crossterm::style::{
     SetBackgroundColor,
@@ -11,6 +10,10 @@ use crossterm::execute;
 pub struct Size {
     pub width: usize,
     pub height: usize,
+}
+pub struct Frame {
+    pub size: Size,
+    pub content: Vec<Color>,
 }
 pub struct Terminal {
     size: Size
