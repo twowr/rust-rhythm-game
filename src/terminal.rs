@@ -1,4 +1,5 @@
 use std::io::stdout;
+use crate::Frame;
 use crossterm::terminal::enable_raw_mode;
 use crossterm::style::{
     SetBackgroundColor,
@@ -6,21 +7,10 @@ use crossterm::style::{
     Print,
 };
 use crossterm::execute;
+#[derive(PartialEq)]
 pub struct Size {
     pub width: usize,
     pub height: usize,
-}
-impl PartialEq for Size {
-    fn eq(&self, other: &Self) -> bool {
-        self.width == other.width && self.height == other.height
-    }
-    fn ne(&self, other: &Self) -> bool {
-        self.width != other.width || self.height != other.height
-    }
-}
-pub struct frame {
-    pub size: Size,
-    pub content: Vec<Color>,
 }
 pub struct Terminal {
     size: Size
@@ -39,7 +29,7 @@ impl Terminal {
             }
         })
     }
-    pub fn display(&self, frame: &frame) -> crossterm::Result<()> {
+    pub fn display(&self, frame: &Frame) -> crossterm::Result<()> {
         // haven't handled when frame size is different from terminal size
         let frame_size = &frame.size;
         if frame_size == &self.size {
