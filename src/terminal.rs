@@ -1,8 +1,9 @@
 use std::io::stdout;
+use crate::frame::Frame;
 use crossterm::terminal::enable_raw_mode;
 use crossterm::style::{
     SetBackgroundColor,
-    Color, ResetColor,
+    ResetColor,
     Print,
 };
 use crossterm::execute;
@@ -10,10 +11,6 @@ use crossterm::execute;
 pub struct Size {
     pub width: usize,
     pub height: usize,
-}
-pub struct Frame {
-    pub size: Size,
-    pub content: Vec<Color>,
 }
 pub struct Terminal {
     size: Size
@@ -32,14 +29,14 @@ impl Terminal {
             }
         })
     }
-    pub fn display(&self, frame: &Frame) -> crossterm::Result<()> {
+    pub fn display(&self, frame: Frame) -> crossterm::Result<()> {
         // haven't handled when frame size is different from terminal size
-        let frame_size = &frame.size;
+        let frame_size = &frame.resolution;
         if frame_size == &self.size {
             for y in 0..frame_size.height {
                 for x in 0..frame_size.width {
                     execute!(stdout(),
-                             SetBackgroundColor(*frame.content.get(y*frame.size.width + x).unwrap()),
+                             SetBackgroundColor(*frame.content.get(y*frame.resolution.width + x).unwrap()),
                              Print(" "),
                              ResetColor,
                     ).unwrap();
