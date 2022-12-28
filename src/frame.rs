@@ -1,5 +1,5 @@
 use crate::Size;
-use num_traits::{cast::ToPrimitive, Pow};
+use num_traits::cast::ToPrimitive;
 use std::ops::Mul;
 use crossterm::style::Color;
 pub struct Frame {
