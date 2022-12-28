@@ -1,5 +1,7 @@
 use std::io::stdout;
+use std::ops::Mul;
 use crate::frame::Frame;
+use num_traits::cast::ToPrimitive;
 use crossterm::terminal::enable_raw_mode;
 use crossterm::style::{
     SetBackgroundColor,
@@ -11,6 +13,28 @@ use crossterm::execute;
 pub struct Size {
     pub width: usize,
     pub height: usize,
+}
+impl<T: ToPrimitive> Mul<T> for Size{
+    type Output = Self;
+    fn mul(self, rhs: T) -> Self::Output {
+        let rhs = rhs.to_f32().unwrap();
+        let width = self.width as f32;
+        let height = self.height as f32;
+        Self{
+            width: (width * rhs) as usize,
+            height: (height * rhs) as usize,
+        }
+    }
+}
+impl Mul<Self> for Size {
+    type Output = Self;
+
+    fn mul(self, rhs: Self) -> Self::Output {
+        Self{
+            width: self.width * rhs.width,
+            height: self.height * rhs.height,
+        }
+    }
 }
 pub struct Terminal {
     size: Size
