@@ -9,7 +9,7 @@ use crossterm::style::{
     Print,
 };
 use crossterm::execute;
-#[derive(PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 pub struct Size {
     pub width: usize,
     pub height: usize,
