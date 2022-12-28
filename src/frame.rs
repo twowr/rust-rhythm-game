@@ -48,3 +48,14 @@ impl Mul<Size> for Frame {
 
     }
 }
+impl Frame {
+    pub fn init() -> Frame {
+        Frame {
+            resolution: Size {
+                width: 0,
+                height: 0,
+            },
+            content: vec![],
+        }
+    }
+}
