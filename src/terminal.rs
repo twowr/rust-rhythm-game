@@ -1,5 +1,5 @@
 use std::io::stdout;
-use std::ops::{ Mul, Add, Sub };
+use std::ops::{ Mul, Add, Sub, Div };
 use crate::frame::Frame;
 use num_traits::cast::ToPrimitive;
 use crossterm::terminal::enable_raw_mode;
@@ -17,12 +17,10 @@ pub struct Vector {
 impl<T: ToPrimitive> Mul<T> for Vector{
     type Output = Self;
     fn mul(self, rhs: T) -> Self::Output {
-        let rhs = rhs.to_f32().unwrap();
-        let x = self.x as f32;
-        let y = self.y as f32;
+        let rhs = rhs.to_usize().unwrap();
         Self{
-            x: (x * rhs) as usize,
-            y: (y * rhs) as usize,
+            x: self.x * rhs,
+            y: self.y * rhs,
         }
     }
 }
@@ -33,6 +31,17 @@ impl Mul for Vector {
         Self{
             x: self.x * rhs.x,
             y: self.y * rhs.y,
+        }
+    }
+}
+impl<T: ToPrimitive> Div<T> for Vector {
+    type Output = Self;
+
+    fn div(self, rhs: T) -> Self::Output {
+        let rhs = rhs.to_usize().unwrap();
+        Self{
+            x: self.x * rhs,
+            y: self.y * rhs,
         }
     }
 }
@@ -73,14 +82,14 @@ impl Terminal {
             }
         })
     }
-    pub fn display(&self, frame: Frame) -> crossterm::Result<()> {
+    pub fn display(&self, frame: &Frame) -> crossterm::Result<()> {
         // haven't handled when frame size is different from terminal size
         let frame_size = &frame.resolution;
         if frame_size == &self.size {
             for y in 0..frame_size.y {
                 for x in 0..frame_size.x {
                     execute!(stdout(),
-                             SetBackgroundColor(*frame.content.get(y*frame.resolution.x + x).unwrap()),
+                             SetBackgroundColor(*frame.content.get(y * frame.resolution.x + x).unwrap()),
                              Print(" "),
                              ResetColor,
                     ).unwrap();
