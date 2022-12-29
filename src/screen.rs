@@ -30,12 +30,18 @@ pub struct Screen {
     pub resolution: Vector,
 }
 impl Screen {
+    pub fn init() -> Self {
+        Self {
+            elements: vec![],
+            resolution: Vector { x: 0, y: 0 },
+        }
+    }
     pub fn render(&mut self, resolution: Vector) -> Frame {
         self.elements.sort();
         let mut frame = Frame::init();
         frame.resolution = resolution;
         for screen_element in self.elements.iter() {
-            let offset = screen_element.position + screen_element.origin;
+            let offset = screen_element.position - screen_element.origin;
             let element_resolution = screen_element.frame.resolution;
             for y in 0..resolution.y {
                 for x in 0..resolution.x {
