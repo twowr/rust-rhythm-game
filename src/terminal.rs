@@ -1,5 +1,5 @@
 use std::io::stdout;
-use std::ops::Mul;
+use std::ops::{ Mul, Add, Sub };
 use crate::frame::Frame;
 use num_traits::cast::ToPrimitive;
 use crossterm::terminal::enable_raw_mode;
@@ -10,46 +10,66 @@ use crossterm::style::{
 };
 use crossterm::execute;
 #[derive(Copy, Clone, PartialEq)]
-pub struct Size {
-    pub width: usize,
-    pub height: usize,
+pub struct Vector {
+    pub x: usize,
+    pub y: usize,
 }
-impl<T: ToPrimitive> Mul<T> for Size{
+impl<T: ToPrimitive> Mul<T> for Vector{
     type Output = Self;
     fn mul(self, rhs: T) -> Self::Output {
         let rhs = rhs.to_f32().unwrap();
-        let width = self.width as f32;
-        let height = self.height as f32;
+        let x = self.x as f32;
+        let y = self.y as f32;
         Self{
-            width: (width * rhs) as usize,
-            height: (height * rhs) as usize,
+            x: (x * rhs) as usize,
+            y: (y * rhs) as usize,
         }
     }
 }
-impl Mul<Self> for Size {
+impl Mul for Vector {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
         Self{
-            width: self.width * rhs.width,
-            height: self.height * rhs.height,
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+        }
+    }
+}
+impl Add for Vector {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+impl Sub for Vector {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
         }
     }
 }
 pub struct Terminal {
-    size: Size
+    size: Vector
 }
 impl Terminal {
-    pub fn size(&self) -> &Size {
+    pub fn size(&self) -> &Vector {
         &self.size
     }
     pub fn init() -> std::io::Result<Self> {
         enable_raw_mode().unwrap();
         let size = crossterm::terminal::size()?;
         Ok(Self {
-            size: Size{
-                width: size.0 as usize,
-                height: size.1 as usize,
+            size: Vector{
+                x: size.0 as usize,
+                y: size.1 as usize,
             }
         })
     }
@@ -57,10 +77,10 @@ impl Terminal {
         // haven't handled when frame size is different from terminal size
         let frame_size = &frame.resolution;
         if frame_size == &self.size {
-            for y in 0..frame_size.height {
-                for x in 0..frame_size.width {
+            for y in 0..frame_size.y {
+                for x in 0..frame_size.x {
                     execute!(stdout(),
-                             SetBackgroundColor(*frame.content.get(y*frame.resolution.width + x).unwrap()),
+                             SetBackgroundColor(*frame.content.get(y*frame.resolution.x + x).unwrap()),
                              Print(" "),
                              ResetColor,
                     ).unwrap();
