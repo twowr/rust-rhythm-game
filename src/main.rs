@@ -5,13 +5,15 @@ use terminal::Terminal;
 use frame::Frame;
 use terminal::Vector;
 use crossterm::style::Color;
+use rand::random;
 fn main() {
     let term = Terminal::init().unwrap();
+    let mut content:Vec<Color> = vec![];
+    for _ in 0..(term.size().y * term.size().x) {
+        content.append(&mut vec![Color::Rgb { r: random(), g: random(), b: random() }]);
+    }
     term.display(Frame {
-        resolution: Vector { x: 3, y: 3 },
-        content: vec![Color::Red, Color::Black, Color::Blue,
-                      Color::Green, Color::Yellow, Color::White,
-                      Color::Grey, Color::Magenta, Color::DarkGreen,
-        ]
+        resolution: *term.size(),
+        content: content,
     }).unwrap();
 }

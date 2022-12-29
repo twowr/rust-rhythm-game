@@ -85,6 +85,7 @@ impl Terminal {
                              ResetColor,
                     ).unwrap();
                 }
+                println!("\r");
             }
         }
         Ok(())
