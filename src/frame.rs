@@ -2,6 +2,7 @@ use crate::Vector;
 use num_traits::cast::ToPrimitive;
 use std::ops::Mul;
 use crossterm::style::Color;
+#[derive(Debug)]
 pub struct Frame {
     pub resolution: Vector,
     pub content: Vec<Color>,

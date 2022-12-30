@@ -9,7 +9,7 @@ use crossterm::style::{
     Print,
 };
 use crossterm::execute;
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub struct Vector {
     pub x: usize,
     pub y: usize,
@@ -40,8 +40,8 @@ impl<T: ToPrimitive> Div<T> for Vector {
     fn div(self, rhs: T) -> Self::Output {
         let rhs = rhs.to_usize().unwrap();
         Self{
-            x: self.x * rhs,
-            y: self.y * rhs,
+            x: self.x / rhs,
+            y: self.y / rhs,
         }
     }
 }

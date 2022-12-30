@@ -2,6 +2,7 @@ use crossterm::style::Color;
 
 use crate::frame::Frame;
 use crate::Vector;
+#[derive(Debug)]
 pub struct ScreenElement {
     pub position: Vector,
     pub origin: Vector,
@@ -47,14 +48,16 @@ impl Screen {
             let element_resolution = screen_element.frame.resolution;
             for y in 0..resolution.y {
                 for x in 0..resolution.x {
-                    frame.content.push(Color::Black);
                     if (y >= offset.y)
                     && (y <= offset.y + element_resolution.y)
                     && (x >= offset.x)
                     && (x <= offset.x + element_resolution.x)
                     {
                         let Vector { x: source_x, y: source_y } = Vector { x, y } - offset;
-                        frame.content[y * resolution.x + x] = screen_element.frame.content[source_y * element_resolution.x + source_x];
+                        frame.content.push(screen_element.frame.content[source_y * element_resolution.x + source_x]);
+                        print!("{:?}", frame.content);
+                    } else {
+                        frame.content.push(Color::Black);
                     }
                 }
             }
