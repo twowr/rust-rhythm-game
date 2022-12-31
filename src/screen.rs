@@ -1,5 +1,4 @@
 use crossterm::style::Color;
-
 use crate::frame::Frame;
 use crate::Vector;
 #[derive(Debug)]
@@ -49,13 +48,12 @@ impl Screen {
             for y in 0..resolution.y {
                 for x in 0..resolution.x {
                     if (y >= offset.y)
-                    && (y <= offset.y + element_resolution.y)
+                    && (y <= offset.y + element_resolution.y.saturating_sub(1))
                     && (x >= offset.x)
-                    && (x <= offset.x + element_resolution.x)
+                    && (x <= offset.x + element_resolution.x.saturating_sub(1))
                     {
                         let Vector { x: source_x, y: source_y } = Vector { x, y } - offset;
                         frame.content.push(screen_element.frame.content[source_y * element_resolution.x + source_x]);
-                        print!("{:?}", frame.content);
                     } else {
                         frame.content.push(Color::Black);
                     }
