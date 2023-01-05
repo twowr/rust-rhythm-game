@@ -1,10 +1,10 @@
 use crossterm::style::Color;
 use crate::frame::Frame;
-use crate::Vector;
+use crate::vector::{ Uvector, Ivector };
 #[derive(Debug)]
 pub struct ScreenElement {
-    pub position: Vector,
-    pub origin: Vector,
+    pub position: Ivector,
+    pub origin: Ivector,
     pub frame: Frame,
     pub z_order: i8,
 }
@@ -29,16 +29,16 @@ impl Ord for ScreenElement {
 }
 pub struct Screen {
     pub elements: Vec<ScreenElement>,
-    pub resolution: Vector,
+    pub resolution: Uvector,
 }
 impl Screen {
     pub fn init() -> Self {
         Self {
             elements: vec![],
-            resolution: Vector { x: 0, y: 0 },
+            resolution: Uvector { x: 0, y: 0 },
         }
     }
-    pub fn render(&mut self, resolution: &Vector) -> Frame {
+    pub fn render(&mut self, resolution: &Uvector) -> Frame {
         self.elements.sort();
         let mut frame = Frame::init();
         frame.resolution = *resolution;
@@ -47,12 +47,13 @@ impl Screen {
             let element_resolution = screen_element.frame.resolution;
             for y in 0..resolution.y {
                 for x in 0..resolution.x {
+                    let Ivector { x, y } = Uvector { x, y }.into();
                     if (y >= offset.y)
                     && (y <= offset.y + element_resolution.y.saturating_sub(1))
                     && (x >= offset.x)
                     && (x <= offset.x + element_resolution.x.saturating_sub(1))
                     {
-                        let Vector { x: source_x, y: source_y } = Vector { x, y } - offset;
+                        let Uvector { x: source_x, y: source_y } = (Ivector { x, y } - offset).into();
                         frame.content.push(screen_element.frame.content[source_y * element_resolution.x + source_x]);
                     } else {
                         frame.content.push(Color::Black);
