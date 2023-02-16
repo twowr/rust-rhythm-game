@@ -6,10 +6,16 @@ pub struct Asset;
 impl Asset {
     pub fn random_color_block(resolution: Uvector) -> Frame {
         let mut frame = Frame::init();
-        frame.resolution = resolution;
+        frame.resolution = resolution.into();
         for _ in 0..(resolution.y * resolution.x) {
             frame.content.push(Color::Rgb { r: random(), g: random(), b: random() });
         }
         frame
+    }
+    pub fn receiver(size: Uvector) -> Frame {
+        Frame {
+            resolution: size.into(),
+            content: vec!()
+        }
     }
 }
