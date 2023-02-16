@@ -2,13 +2,13 @@ mod terminal;
 mod screen;
 mod frame;
 mod vector;
-mod assest;
+mod asset;
 use terminal::Terminal;
 use screen::{
     Screen, ScreenElement
 };
 use vector::{ Uvector, Ivector };
-use assest::Asset;
+use asset::Asset;
 fn main() {
     let term = Terminal::init().unwrap();
     let mut test_screen = Screen::init();
