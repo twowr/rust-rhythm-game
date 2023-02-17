@@ -10,15 +10,15 @@ use screen::{
 use vector::{ Uvector, Ivector };
 use asset::Asset;
 fn main() {
-    let term = Terminal::init().unwrap();
+    let terminal= Terminal::init().unwrap();
     let mut test_screen = Screen::init();
-    test_screen.resolution = *term.size();
+    test_screen.resolution = terminal.size();
     test_screen.add(ScreenElement {
-        position: (*term.size() / 2).into(),
+        position: (terminal.size() / 2).into(),
         origin: Ivector { x: 2, y: 2 },
-        frame: Asset::random_color_block(Uvector { x: 5, y: 5 }),
+        frame: Asset::receiver(),//Asset::random_color_block(Uvector { x: 5, y: 5 }),
         z_order: 0,
     });
-    term.display(&test_screen.render(term.size())).unwrap();
+    terminal.display(&test_screen.render(terminal.size())).unwrap();
     loop {}
 }

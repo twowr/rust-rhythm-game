@@ -1,4 +1,4 @@
-use crate::{Ivector, vector::Uvector};
+use crate::Ivector;
 use num_traits::cast::ToPrimitive;
 use std::ops::Mul;
 use crossterm::style::Color;

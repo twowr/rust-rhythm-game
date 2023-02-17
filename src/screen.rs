@@ -38,22 +38,21 @@ impl Screen {
             resolution: Uvector { x: 0, y: 0 },
         }
     }
-    pub fn render(&mut self, resolution: &Uvector) -> Frame {
+    pub fn render(&mut self, resolution: Uvector) -> Frame {
         self.elements.sort();
         let mut frame = Frame::init();
-        frame.resolution = *resolution;
+        frame.resolution = resolution.into();
         for screen_element in self.elements.iter() {
-            let offset = screen_element.position - screen_element.origin;
-            let element_resolution = screen_element.frame.resolution;
+            let offset:Uvector = (screen_element.position - screen_element.origin).into();
+            let element_resolution: Uvector = screen_element.frame.resolution.abs().into();
             for y in 0..resolution.y {
                 for x in 0..resolution.x {
-                    let Ivector { x, y } = Uvector { x, y }.into();
                     if (y >= offset.y)
                     && (y <= offset.y + element_resolution.y.saturating_sub(1))
                     && (x >= offset.x)
                     && (x <= offset.x + element_resolution.x.saturating_sub(1))
                     {
-                        let Uvector { x: source_x, y: source_y } = (Ivector { x, y } - offset).into();
+                        let Uvector { x: source_x, y: source_y } = Uvector { x: x, y: y } - offset;
                         frame.content.push(screen_element.frame.content[source_y * element_resolution.x + source_x]);
                     } else {
                         frame.content.push(Color::Black);

@@ -62,6 +62,14 @@ pub struct Ivector {
     pub x: isize,
     pub y: isize,
 }
+impl Ivector {
+    pub fn abs(&self) -> Ivector{
+        Ivector {
+            x: self.x.abs(),
+            y: self.y.abs(),
+        }
+    }
+}
 impl<T: ToPrimitive> Mul<T> for Ivector{
     type Output = Self;
     fn mul(self, rhs: T) -> Self::Output {

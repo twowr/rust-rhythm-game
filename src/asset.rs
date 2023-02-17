@@ -1,4 +1,4 @@
-use crate::frame::Frame;
+use crate::{frame::Frame, vector::Ivector};
 use crossterm::style::Color;
 use crate::vector::Uvector;
 use rand::random;
@@ -12,10 +12,17 @@ impl Asset {
         }
         frame
     }
-    pub fn receiver(size: Uvector) -> Frame {
+    pub fn receiver() -> Frame {
         Frame {
-            resolution: size.into(),
-            content: vec!()
+            resolution: Ivector { x: 5, y: 5 },
+            content: vec!(
+                Color::Black, Color::Grey, Color::Grey, Color::Grey, Color::Black,
+                Color::Grey, Color::Grey, Color::Grey, Color::Grey, Color::Grey,
+                Color::Grey, Color::Grey, Color::Grey, Color::Grey, Color::Grey,
+                Color::Grey, Color::Grey, Color::Grey, Color::Grey, Color::Grey,
+                Color::Black, Color::Grey, Color::Grey, Color::Grey, Color::Black,
+
+            )
         }
     }
 }
