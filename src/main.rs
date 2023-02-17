@@ -19,6 +19,12 @@ fn main() {
         frame: Asset::receiver(),//Asset::random_color_block(Uvector { x: 5, y: 5 }),
         z_order: 0,
     });
+    test_screen.add(ScreenElement {
+        position: (terminal.size() / 2) + Ivector { x: -1, y: -5 },
+        origin: Ivector { x: 0, y: 0 },
+        frame: Asset::note(),
+        z_order: 0,
+    });
     terminal.display(&test_screen.render(terminal.size())).unwrap();
     loop {}
 }

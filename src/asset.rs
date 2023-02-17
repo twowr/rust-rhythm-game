@@ -14,15 +14,23 @@ impl Asset {
     }
     pub fn receiver() -> Frame {
         Frame {
-            resolution: Ivector { x: 5, y: 5 },
+            resolution: Ivector { x: 5, y: 4 },
             content: vec!(
                 Color::Black, Color::Grey, Color::Grey, Color::Grey, Color::Black,
-                Color::Grey, Color::Grey, Color::Grey, Color::Grey, Color::Grey,
                 Color::Grey, Color::Grey, Color::Grey, Color::Grey, Color::Grey,
                 Color::Grey, Color::Grey, Color::Grey, Color::Grey, Color::Grey,
                 Color::Black, Color::Grey, Color::Grey, Color::Grey, Color::Black,
 
             )
+        }
+    }
+    pub fn note() -> Frame {
+        Frame {
+            resolution: Ivector { x: 3, y: 2 },
+            content: vec!(
+                Color::White, Color::White, Color::White,
+                Color::White, Color::White, Color::White,
+            ) 
         }
     }
 }

@@ -42,8 +42,9 @@ impl Screen {
         self.elements.sort();
         let mut frame = Frame::init();
         frame.resolution = resolution.into();
+        frame.content = vec![Color::Black; resolution.x * resolution.y];
         for screen_element in self.elements.iter() {
-            let offset:Uvector = (screen_element.position - screen_element.origin).into();
+            let offset: Uvector = (screen_element.position - screen_element.origin).into();
             let element_resolution: Uvector = screen_element.frame.resolution.abs().into();
             for y in 0..resolution.y {
                 for x in 0..resolution.x {
@@ -53,9 +54,7 @@ impl Screen {
                     && (x <= offset.x + element_resolution.x.saturating_sub(1))
                     {
                         let Uvector { x: source_x, y: source_y } = Uvector { x: x, y: y } - offset;
-                        frame.content.push(screen_element.frame.content[source_y * element_resolution.x + source_x]);
-                    } else {
-                        frame.content.push(Color::Black);
+                        frame.content[y * resolution.x + x] = screen_element.frame.content[source_y * element_resolution.x + source_x];
                     }
                 }
             }

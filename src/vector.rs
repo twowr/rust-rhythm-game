@@ -121,6 +121,46 @@ impl Sub for Ivector {
         }
     }
 }
+impl Add<Uvector> for Ivector {
+   type Output = Self; 
+
+    fn add(self, rhs: Uvector) -> Self::Output {
+        Self {
+            x: self.x + rhs.x as isize,
+            y: self.y + rhs.y as isize,
+        }
+    }
+}
+impl Sub<Uvector> for Ivector {
+   type Output = Self; 
+
+    fn sub(self, rhs: Uvector) -> Self::Output {
+        Self {
+            x: self.x - rhs.x as isize,
+            y: self.y - rhs.y as isize,
+        }
+    }
+}
+impl Add<Ivector> for Uvector {
+    type Output = Ivector;
+
+    fn add(self, rhs: Ivector) -> Self::Output {
+        Ivector {
+            x: self.x as isize + rhs.x,
+            y: self.y as isize + rhs.y,
+        }
+    }
+}
+impl Sub<Ivector> for Uvector {
+    type Output = Ivector;
+
+    fn sub(self, rhs: Ivector) -> Self::Output {
+        Ivector {
+            x: self.x as isize - rhs.x,
+            y: self.y as isize - rhs.y,
+        }
+    }
+}
 impl From<Uvector> for Ivector {
     fn from(uvector: Uvector) -> Self {
         Self {
